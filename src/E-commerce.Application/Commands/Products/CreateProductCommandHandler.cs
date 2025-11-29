@@ -1,5 +1,6 @@
 using E_commerce.Application.Common.Interfaces;
 using E_commerce.Domain.Entities;
+using E_commerce.Domain.ValueObjects;
 
 namespace E_commerce.Application.Commands.Products;
 
@@ -14,10 +15,12 @@ public class CreateProductCommandHandler : ICommandHandler<CreateProductCommand,
 
     public async Task<Guid> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
+        var price = new Money(request.Price, request.Currency);
+        
         var product = new Product(
             request.Name,
             request.Description,
-            request.Price,
+            price,
             request.Stock,
             request.Category
         );

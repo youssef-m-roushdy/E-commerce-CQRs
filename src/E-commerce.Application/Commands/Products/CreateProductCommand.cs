@@ -6,6 +6,7 @@ public record CreateProductCommand(
     string Name,
     string Description,
     decimal Price,
+    string Currency,
     int Stock,
     string Category
 ) : ICommand<Guid>;

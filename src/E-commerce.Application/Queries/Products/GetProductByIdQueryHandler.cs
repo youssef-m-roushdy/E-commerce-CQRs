@@ -1,4 +1,5 @@
 using E_commerce.Application.Common.Interfaces;
+using E_commerce.Application.DTOs;
 using Microsoft.EntityFrameworkCore;
 
 namespace E_commerce.Application.Queries.Products;
@@ -21,7 +22,7 @@ public class GetProductByIdQueryHandler : IQueryHandler<GetProductByIdQuery, Pro
                 Id = p.Id,
                 Name = p.Name,
                 Description = p.Description,
-                Price = p.Price,
+                Price = p.Price.Amount,
                 Stock = p.Stock,
                 Category = p.Category
             })
