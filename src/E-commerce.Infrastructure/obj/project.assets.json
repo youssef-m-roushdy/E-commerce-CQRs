@@ -2975,7 +2975,8 @@
     "net8.0": [
       "E-commerce.Application >= 1.0.0",
       "E-commerce.Domain >= 1.0.0",
-      "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 8.0.0"
+      "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 8.0.0",
+      "Microsoft.Extensions.Identity.Core >= 8.0.0"
     ]
   },
   "packageFolders": {
@@ -3023,6 +3024,10 @@
         "targetAlias": "net8.0",
         "dependencies": {
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+            "target": "Package",
+            "version": "[8.0.0, )"
+          },
+          "Microsoft.Extensions.Identity.Core": {
             "target": "Package",
             "version": "[8.0.0, )"
           }

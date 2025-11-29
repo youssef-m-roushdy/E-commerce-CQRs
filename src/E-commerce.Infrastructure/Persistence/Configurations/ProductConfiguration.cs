@@ -15,17 +15,49 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .HasMaxLength(200);
 
         builder.Property(p => p.Description)
-            .HasMaxLength(1000);
+            .IsRequired()
+            .HasMaxLength(2000);
 
-        builder.Property(p => p.Price)
-            .HasPrecision(18, 2);
+        builder.OwnsOne(p => p.Price, price =>
+        {
+            price.Property(m => m.Amount)
+                .HasColumnName("Price")
+                .HasPrecision(18, 2)
+                .IsRequired();
+
+            price.Property(m => m.Currency)
+                .HasColumnName("Currency")
+                .HasMaxLength(3)
+                .IsRequired();
+        });
+
+        builder.Property(p => p.Stock)
+            .IsRequired();
+
+        builder.Property(p => p.Status)
+            .IsRequired()
+            .HasConversion<string>();
 
         builder.Property(p => p.Category)
             .IsRequired()
             .HasMaxLength(100);
 
+        builder.Property(p => p.ImageUrl)
+            .HasMaxLength(500);
+
+        builder.Property(p => p.Sku)
+            .HasMaxLength(50);
+
+        builder.Property(p => p.LowStockThreshold)
+            .IsRequired();
+
+        builder.Property(p => p.IsDeleted)
+            .IsRequired()
+            .HasDefaultValue(false);
+
         builder.HasQueryFilter(p => !p.IsDeleted);
 
         builder.HasIndex(p => p.Category);
+        builder.HasIndex(p => p.Sku).IsUnique();
     }
 }

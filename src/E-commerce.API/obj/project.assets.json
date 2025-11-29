@@ -1235,7 +1235,8 @@
         "dependencies": {
           "E-commerce.Application": "1.0.0",
           "E-commerce.Domain": "1.0.0",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.0"
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.0",
+          "Microsoft.Extensions.Identity.Core": "8.0.0"
         },
         "compile": {
           "bin/placeholder/E-commerce.Infrastructure.dll": {}
