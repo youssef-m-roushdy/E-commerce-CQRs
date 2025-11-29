@@ -22,7 +22,10 @@ public class CreateProductCommandHandler : ICommandHandler<CreateProductCommand,
             request.Description,
             price,
             request.Stock,
-            request.Category
+            request.Category,
+            request.Sku,
+            request.ImageUrl,
+            request.LowStockThreshold
         );
 
         _context.Products.Add(product);

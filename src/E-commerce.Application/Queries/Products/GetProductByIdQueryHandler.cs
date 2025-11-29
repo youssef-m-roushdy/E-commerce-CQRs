@@ -23,8 +23,14 @@ public class GetProductByIdQueryHandler : IQueryHandler<GetProductByIdQuery, Pro
                 Name = p.Name,
                 Description = p.Description,
                 Price = p.Price.Amount,
+                Currency = p.Price.Currency,
                 Stock = p.Stock,
-                Category = p.Category
+                Status = p.Status.ToString(),
+                Category = p.Category,
+                ImageUrl = p.ImageUrl,
+                Sku = p.Sku,
+                LowStockThreshold = p.LowStockThreshold,
+                IsAvailableForPurchase = p.IsAvailableForPurchase()
             })
             .FirstOrDefaultAsync(cancellationToken);
 

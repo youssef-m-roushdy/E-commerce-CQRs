@@ -8,5 +8,8 @@ public record CreateProductCommand(
     decimal Price,
     string Currency,
     int Stock,
-    string Category
+    string Category,
+    string? Sku,
+    string? ImageUrl,
+    int LowStockThreshold
 ) : ICommand<Guid>;
