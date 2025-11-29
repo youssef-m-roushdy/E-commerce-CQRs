@@ -3,10 +3,13 @@ using FluentValidation;
 
 namespace E_commerce.Application.Validators.Products;
 
-public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
+public class UpdateProductCommandValidator : AbstractValidator<UpdateProductCommand>
 {
-    public CreateProductCommandValidator()
+    public UpdateProductCommandValidator()
     {
+        RuleFor(x => x.Id)
+            .NotEmpty().WithMessage("Product ID is required");
+
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Product name is required")
             .MaximumLength(200).WithMessage("Product name must not exceed 200 characters");
@@ -20,17 +23,11 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
 
         RuleFor(x => x.Currency)
             .NotEmpty().WithMessage("Currency is required")
-            .Length(3).WithMessage("Currency must be a 3-letter ISO code (e.g., USD, EUR)")
+            .Length(3).WithMessage("Currency must be a 3-letter ISO code")
             .Matches("^[A-Z]{3}$").WithMessage("Currency must be uppercase letters only");
 
-        RuleFor(x => x.Stock)
-            .GreaterThanOrEqualTo(0).WithMessage("Stock cannot be negative");
-
         RuleFor(x => x.Category)
-            .NotEmpty().WithMessage("Product category is required")
+            .NotEmpty().WithMessage("Category is required")
             .MaximumLength(100).WithMessage("Category must not exceed 100 characters");
-
-        RuleFor(x => x.LowStockThreshold)
-            .GreaterThanOrEqualTo(0).WithMessage("Low stock threshold cannot be negative");
     }
 }
