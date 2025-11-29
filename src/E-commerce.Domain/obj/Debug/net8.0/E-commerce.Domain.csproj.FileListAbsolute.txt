@@ -1,0 +1,12 @@
+/home/youssef/Desktop/E-commerce/src/E-commerce.Domain/obj/Debug/net8.0/E-commerce.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/home/youssef/Desktop/E-commerce/src/E-commerce.Domain/obj/Debug/net8.0/E-commerce.Domain.AssemblyInfoInputs.cache
+/home/youssef/Desktop/E-commerce/src/E-commerce.Domain/obj/Debug/net8.0/E-commerce.Domain.AssemblyInfo.cs
+/home/youssef/Desktop/E-commerce/src/E-commerce.Domain/obj/Debug/net8.0/E-commerce.Domain.csproj.CoreCompileInputs.cache
+/home/youssef/Desktop/E-commerce/src/E-commerce.Domain/obj/Debug/net8.0/E-commerce.Domain.sourcelink.json
+/home/youssef/Desktop/E-commerce/src/E-commerce.Domain/bin/Debug/net8.0/E-commerce.Domain.deps.json
+/home/youssef/Desktop/E-commerce/src/E-commerce.Domain/bin/Debug/net8.0/E-commerce.Domain.dll
+/home/youssef/Desktop/E-commerce/src/E-commerce.Domain/bin/Debug/net8.0/E-commerce.Domain.pdb
+/home/youssef/Desktop/E-commerce/src/E-commerce.Domain/obj/Debug/net8.0/E-commerce.Domain.dll
+/home/youssef/Desktop/E-commerce/src/E-commerce.Domain/obj/Debug/net8.0/refint/E-commerce.Domain.dll
+/home/youssef/Desktop/E-commerce/src/E-commerce.Domain/obj/Debug/net8.0/E-commerce.Domain.pdb
+/home/youssef/Desktop/E-commerce/src/E-commerce.Domain/obj/Debug/net8.0/ref/E-commerce.Domain.dll
