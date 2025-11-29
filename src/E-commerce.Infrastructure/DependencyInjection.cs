@@ -1,10 +1,15 @@
 using E_commerce.Application.Common.Interfaces;
+using E_commerce.Application.Common.Models;
 using E_commerce.Infrastructure.Identity;
 using E_commerce.Infrastructure.Persistence;
+using E_commerce.Infrastructure.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace E_commerce.Infrastructure;
 
@@ -43,7 +48,42 @@ public static class DependencyInjection
             options.User.RequireUniqueEmail = true;
         })
         .AddRoles<IdentityRole<Guid>>()
-        .AddEntityFrameworkStores<ApplicationDbContext>();
+        .AddEntityFrameworkStores<ApplicationDbContext>()
+        .AddSignInManager<SignInManager<ApplicationUser>>();
+
+        // Configure JWT Settings
+        var jwtSettings = configuration.GetSection("JwtSettings");
+        services.Configure<JwtSettings>(jwtSettings);
+
+        var jwtSettingsValue = jwtSettings.Get<JwtSettings>() ?? throw new InvalidOperationException("JWT settings not configured");
+
+        // Add JWT Authentication
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(options =>
+        {
+            options.SaveToken = true;
+            options.RequireHttpsMetadata = false;
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = jwtSettingsValue.Issuer,
+                ValidAudience = jwtSettingsValue.Audience,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettingsValue.Secret)),
+                ClockSkew = TimeSpan.Zero
+            };
+        });
+
+        // Register Services
+        services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IIdentityService, IdentityService>();
 
         return services;
     }
