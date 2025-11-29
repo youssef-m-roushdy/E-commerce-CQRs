@@ -5,6 +5,10 @@
     <ProjectReference Include="..\E-commerce.Domain\E-commerce.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>E_commerce.Infrastructure</RootNamespace>
