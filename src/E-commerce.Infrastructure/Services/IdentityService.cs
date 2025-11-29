@@ -23,9 +23,13 @@ public class IdentityService : IIdentityService
         _jwtSettings = jwtSettings.Value;
     }
 
-    public async Task<AuthResult?> LoginAsync(string email, string password, CancellationToken cancellationToken = default)
+    public async Task<AuthResult?> LoginAsync(string usernameOrEmail, string password, CancellationToken cancellationToken = default)
     {
-        var user = await _userManager.FindByEmailAsync(email);
+        // Try to find by username first, then by email
+        var user = await _userManager.FindByNameAsync(usernameOrEmail);
+        if (user == null)
+            user = await _userManager.FindByEmailAsync(usernameOrEmail);
+        
         if (user == null)
             return null;
 
@@ -37,6 +41,7 @@ public class IdentityService : IIdentityService
     }
 
     public async Task<AuthResult?> RegisterAsync(
+        string username,
         string email, 
         string password, 
         string firstName, 
@@ -44,13 +49,18 @@ public class IdentityService : IIdentityService
         Guid customerId, 
         CancellationToken cancellationToken = default)
     {
-        var existingUser = await _userManager.FindByEmailAsync(email);
-        if (existingUser != null)
+        // Check if username or email already exists
+        var existingByUsername = await _userManager.FindByNameAsync(username);
+        if (existingByUsername != null)
+            return null;
+
+        var existingByEmail = await _userManager.FindByEmailAsync(email);
+        if (existingByEmail != null)
             return null;
 
         var user = new ApplicationUser
         {
-            UserName = email,
+            UserName = username,
             Email = email,
             CustomerId = customerId,
             EmailConfirmed = true // Auto-confirm for now
@@ -80,9 +90,13 @@ public class IdentityService : IIdentityService
         return await GenerateAuthResultAsync(user);
     }
 
-    public async Task<bool> RevokeTokenAsync(string email, CancellationToken cancellationToken = default)
+    public async Task<bool> RevokeTokenAsync(string usernameOrEmail, CancellationToken cancellationToken = default)
     {
-        var user = await _userManager.FindByEmailAsync(email);
+        // Try to find by username first, then by email
+        var user = await _userManager.FindByNameAsync(usernameOrEmail);
+        if (user == null)
+            user = await _userManager.FindByEmailAsync(usernameOrEmail);
+        
         if (user == null)
             return false;
 
@@ -98,6 +112,7 @@ public class IdentityService : IIdentityService
         var claims = new List<Claim>
         {
             new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new(ClaimTypes.Name, user.UserName!),
             new(ClaimTypes.Email, user.Email!),
             new("CustomerId", user.CustomerId?.ToString() ?? string.Empty)
         };

@@ -34,6 +34,7 @@ public class AuthController : BaseApiController
 
         // Create user account
         var authResult = await _identityService.RegisterAsync(
+            request.Username,
             request.Email,
             request.Password,
             request.FirstName,
@@ -42,22 +43,22 @@ public class AuthController : BaseApiController
             cancellationToken);
 
         if (authResult == null)
-            return BadRequest(new { message = "Registration failed. Email may already be in use." });
+            return BadRequest(new { message = "Registration failed. Username or email may already be in use." });
 
         return Ok(authResult);
     }
 
     /// <summary>
-    /// Login with email and password
+    /// Login with username/email and password
     /// </summary>
     [HttpPost("login")]
     [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] LoginRequest request, CancellationToken cancellationToken)
     {
-        var authResult = await _identityService.LoginAsync(request.Email, request.Password, cancellationToken);
+        var authResult = await _identityService.LoginAsync(request.UsernameOrEmail, request.Password, cancellationToken);
 
         if (authResult == null)
-            return Unauthorized(new { message = "Invalid email or password" });
+            return Unauthorized(new { message = "Invalid username/email or password" });
 
         return Ok(authResult);
     }
@@ -84,12 +85,12 @@ public class AuthController : BaseApiController
     [Authorize]
     public async Task<IActionResult> RevokeToken(CancellationToken cancellationToken)
     {
-        var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
+        var username = User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value;
         
-        if (string.IsNullOrEmpty(email))
+        if (string.IsNullOrEmpty(username))
             return BadRequest(new { message = "Invalid user" });
 
-        var result = await _identityService.RevokeTokenAsync(email, cancellationToken);
+        var result = await _identityService.RevokeTokenAsync(username, cancellationToken);
 
         if (!result)
             return BadRequest(new { message = "Token revocation failed" });
@@ -98,9 +99,10 @@ public class AuthController : BaseApiController
     }
 }
 
-public record LoginRequest(string Email, string Password);
+public record LoginRequest(string UsernameOrEmail, string Password);
 
 public record RegisterRequest(
+    string Username,
     string Email,
     string Password,
     string FirstName,
