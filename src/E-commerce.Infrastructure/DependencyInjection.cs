@@ -99,6 +99,7 @@ public static class DependencyInjection
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<IUserManagementService, UserManagementService>();
 
         return services;
     }
