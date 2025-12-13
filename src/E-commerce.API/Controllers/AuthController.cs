@@ -11,10 +11,12 @@ namespace E_commerce.API.Controllers;
 public class AuthController : BaseApiController
 {
     private readonly IIdentityService _identityService;
+    private readonly IEmailService _emailService;
 
-    public AuthController(IIdentityService identityService)
+    public AuthController(IIdentityService identityService, IEmailService emailService)
     {
         _identityService = identityService;
+        _emailService = emailService;
     }
 
     /// <summary>
@@ -46,6 +48,9 @@ public class AuthController : BaseApiController
 
         if (authResult == null)
             return BadRequest(new { message = "Registration failed. Username or email may already be in use." });
+
+        // Send welcome email
+        await _emailService.SendWelcomeEmailAsync(request.Email, request.FirstName, cancellationToken);
 
         return Ok(authResult);
     }
@@ -99,8 +104,75 @@ public class AuthController : BaseApiController
 
         return Ok(new { message = "Token revoked successfully" });
     }
+
+    /// <summary>
+    /// Request email verification token
+    /// </summary>
+    [HttpPost("request-email-verification")]
+    [AllowAnonymous]
+    public async Task<IActionResult> RequestEmailVerification([FromBody] EmailVerificationRequest request, CancellationToken cancellationToken)
+    {
+        var token = await _identityService.GenerateEmailVerificationTokenAsync(request.Email, cancellationToken);
+
+        if (token == null)
+            return NotFound(new { message = "User not found" });
+
+        // Send verification email
+        await _emailService.SendVerificationEmailAsync(request.Email, request.Email, token, cancellationToken);
+
+        return Ok(new { message = "Verification email sent successfully" });
+    }
+
+    /// <summary>
+    /// Verify email with token
+    /// </summary>
+    [HttpPost("verify-email")]
+    [AllowAnonymous]
+    public async Task<IActionResult> VerifyEmail([FromBody] VerifyEmailRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _identityService.VerifyEmailAsync(request.Email, request.Token, cancellationToken);
+
+        if (!result)
+            return BadRequest(new { message = "Email verification failed. Invalid or expired token." });
+
+        return Ok(new { message = "Email verified successfully" });
+    }
+
+    /// <summary>
+    /// Request password reset token
+    /// </summary>
+    [HttpPost("forgot-password")]
+    [AllowAnonymous]
+    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request, CancellationToken cancellationToken)
+    {
+        var token = await _identityService.GeneratePasswordResetTokenAsync(request.Email, cancellationToken);
+
+        if (token == null)
+            return NotFound(new { message = "User not found" });
+
+        // Send password reset email
+        await _emailService.SendPasswordResetEmailAsync(request.Email, request.Email, token, cancellationToken);
+
+        return Ok(new { message = "Password reset email sent successfully" });
+    }
+
+    /// <summary>
+    /// Reset password with token
+    /// </summary>
+    [HttpPost("reset-password")]
+    [AllowAnonymous]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _identityService.ResetPasswordAsync(request.Email, request.Token, request.NewPassword, cancellationToken);
+
+        if (!result)
+            return BadRequest(new { message = "Password reset failed. Invalid or expired token." });
+
+        return Ok(new { message = "Password reset successfully" });
+    }
 }
 
+// Request DTOs
 public record LoginRequest(string UsernameOrEmail, string Password);
 
 public record RegisterRequest(
@@ -111,5 +183,13 @@ public record RegisterRequest(
     string LastName,
     string? PhoneNumber
 );
+
+public record EmailVerificationRequest(string Email);
+
+public record VerifyEmailRequest(string Email, string Token);
+
+public record ForgotPasswordRequest(string Email);
+
+public record ResetPasswordRequest(string Email, string Token, string NewPassword);
 
 public record RefreshTokenRequest(string AccessToken, string RefreshToken);

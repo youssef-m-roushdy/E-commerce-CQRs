@@ -81,9 +81,13 @@ public static class DependencyInjection
             };
         });
 
+        // Configure Email Settings
+        services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
+
         // Register Services
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IIdentityService, IdentityService>();
+        services.AddScoped<IEmailService, EmailService>();
 
         return services;
     }

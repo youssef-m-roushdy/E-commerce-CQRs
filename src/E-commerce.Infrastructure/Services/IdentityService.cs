@@ -107,6 +107,46 @@ public class IdentityService : IIdentityService
         return result.Succeeded;
     }
 
+    public async Task<string?> GenerateEmailVerificationTokenAsync(string email, CancellationToken cancellationToken = default)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user == null)
+            return null;
+
+        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        return token;
+    }
+
+    public async Task<bool> VerifyEmailAsync(string email, string token, CancellationToken cancellationToken = default)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user == null)
+            return false;
+
+        var result = await _userManager.ConfirmEmailAsync(user, token);
+        return result.Succeeded;
+    }
+
+    public async Task<string?> GeneratePasswordResetTokenAsync(string email, CancellationToken cancellationToken = default)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user == null)
+            return null;
+
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        return token;
+    }
+
+    public async Task<bool> ResetPasswordAsync(string email, string token, string newPassword, CancellationToken cancellationToken = default)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user == null)
+            return false;
+
+        var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
+        return result.Succeeded;
+    }
+
     private async Task<AuthResult> GenerateAuthResultAsync(ApplicationUser user)
     {
         var claims = new List<Claim>
