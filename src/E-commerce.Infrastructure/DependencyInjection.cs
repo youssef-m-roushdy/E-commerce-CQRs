@@ -98,6 +98,9 @@ public static class DependencyInjection
         // Configure Cloudinary Settings
         services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
 
+        // Configure Stripe Settings
+        services.Configure<StripeSettings>(configuration.GetSection("StripeSettings"));
+
         // Register Services
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IIdentityService, IdentityService>();
@@ -105,6 +108,7 @@ public static class DependencyInjection
         services.AddScoped<IUserManagementService, UserManagementService>();
         services.AddScoped<INotificationService, NotificationService>();
         services.AddScoped<ICloudinaryService, CloudinaryService>();
+        services.AddScoped<IPaymentService, StripePaymentService>();
 
         return services;
     }
