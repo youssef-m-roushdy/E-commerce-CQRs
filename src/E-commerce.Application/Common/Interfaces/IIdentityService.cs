@@ -12,4 +12,5 @@ public interface IIdentityService
     Task<bool> VerifyEmailAsync(string email, string token, CancellationToken cancellationToken = default);
     Task<string?> GeneratePasswordResetTokenAsync(string email, CancellationToken cancellationToken = default);
     Task<bool> ResetPasswordAsync(string email, string token, string newPassword, CancellationToken cancellationToken = default);
+    Task<AuthResult?> GoogleLoginAsync(string email, string firstName, string lastName, string googleId, Guid? customerId = null, CancellationToken cancellationToken = default);
 }

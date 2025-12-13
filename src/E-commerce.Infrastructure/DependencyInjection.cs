@@ -57,7 +57,7 @@ public static class DependencyInjection
 
         var jwtSettingsValue = jwtSettings.Get<JwtSettings>() ?? throw new InvalidOperationException("JWT settings not configured");
 
-        // Add JWT Authentication
+        // Add JWT Authentication with Google OAuth
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -79,6 +79,17 @@ public static class DependencyInjection
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettingsValue.Secret)),
                 ClockSkew = TimeSpan.Zero
             };
+        })
+        .AddGoogle(options =>
+        {
+            var googleAuth = configuration.GetSection("GoogleAuth");
+            options.ClientId = googleAuth["ClientId"] ?? throw new InvalidOperationException("Google ClientId not configured");
+            options.ClientSecret = googleAuth["ClientSecret"] ?? throw new InvalidOperationException("Google ClientSecret not configured");
+            options.SaveTokens = true;
+            
+            // Request user profile information
+            options.Scope.Add("profile");
+            options.Scope.Add("email");
         });
 
         // Configure Email Settings

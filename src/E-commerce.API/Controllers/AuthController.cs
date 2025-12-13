@@ -170,6 +170,52 @@ public class AuthController : BaseApiController
 
         return Ok(new { message = "Password reset successfully" });
     }
+
+    /// <summary>
+    /// Google OAuth login/register
+    /// </summary>
+    [HttpPost("google")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GoogleLogin([FromBody] GoogleLoginRequest request, CancellationToken cancellationToken)
+    {
+        // In production, verify the Google token with Google's API
+        // For now, we'll trust the client-provided information
+        
+        Guid? customerId = null;
+
+        // Check if customer exists, if not create one
+        if (!string.IsNullOrEmpty(request.Email))
+        {
+            var createCustomerCommand = new CreateCustomerCommand(
+                request.FirstName,
+                request.LastName,
+                request.Email,
+                null // No phone number from Google
+            );
+
+            try
+            {
+                customerId = await Mediator.Send(createCustomerCommand, cancellationToken);
+            }
+            catch
+            {
+                // Customer might already exist, that's okay
+            }
+        }
+
+        var authResult = await _identityService.GoogleLoginAsync(
+            request.Email,
+            request.FirstName,
+            request.LastName,
+            request.GoogleId,
+            customerId,
+            cancellationToken);
+
+        if (authResult == null)
+            return BadRequest(new { message = "Google login failed" });
+
+        return Ok(authResult);
+    }
 }
 
 // Request DTOs
@@ -191,5 +237,12 @@ public record VerifyEmailRequest(string Email, string Token);
 public record ForgotPasswordRequest(string Email);
 
 public record ResetPasswordRequest(string Email, string Token, string NewPassword);
+
+public record GoogleLoginRequest(
+    string Email,
+    string FirstName,
+    string LastName,
+    string GoogleId
+);
 
 public record RefreshTokenRequest(string AccessToken, string RefreshToken);

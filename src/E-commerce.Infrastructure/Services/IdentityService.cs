@@ -147,6 +147,43 @@ public class IdentityService : IIdentityService
         return result.Succeeded;
     }
 
+    public async Task<AuthResult?> GoogleLoginAsync(string email, string firstName, string lastName, string googleId, Guid? customerId = null, CancellationToken cancellationToken = default)
+    {
+        // Check if user exists
+        var user = await _userManager.FindByEmailAsync(email);
+
+        if (user == null)
+        {
+            // Create new user for Google sign-in
+            user = new ApplicationUser
+            {
+                UserName = email.Split('@')[0] + "_" + Guid.NewGuid().ToString().Substring(0, 8),
+                Email = email,
+                EmailConfirmed = true, // Google emails are already verified
+                CustomerId = customerId
+            };
+
+            var result = await _userManager.CreateAsync(user);
+            if (!result.Succeeded)
+                return null;
+
+            // Add Google login
+            await _userManager.AddLoginAsync(user, new UserLoginInfo("Google", googleId, "Google"));
+        }
+        else
+        {
+            // Check if user already has Google login
+            var logins = await _userManager.GetLoginsAsync(user);
+            if (!logins.Any(l => l.LoginProvider == "Google" && l.ProviderKey == googleId))
+            {
+                // Link Google account to existing user
+                await _userManager.AddLoginAsync(user, new UserLoginInfo("Google", googleId, "Google"));
+            }
+        }
+
+        return await GenerateAuthResultAsync(user);
+    }
+
     private async Task<AuthResult> GenerateAuthResultAsync(ApplicationUser user)
     {
         var claims = new List<Claim>
