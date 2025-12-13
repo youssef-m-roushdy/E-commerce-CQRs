@@ -46,14 +46,18 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// Add CORS
+// Add SignalR
+builder.Services.AddSignalR();
+
+// Add CORS with SignalR support
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins("http://localhost:3000", "http://localhost:4200", "http://localhost:5173")
               .AllowAnyMethod()
-              .AllowAnyHeader();
+              .AllowAnyHeader()
+              .AllowCredentials(); // Required for SignalR
     });
 });
 
@@ -163,5 +167,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<E_commerce.Infrastructure.Hubs.NotificationHub>("/hubs/notifications");
 
 app.Run();

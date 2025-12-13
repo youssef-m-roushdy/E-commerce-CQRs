@@ -100,6 +100,7 @@ public static class DependencyInjection
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IUserManagementService, UserManagementService>();
+        services.AddScoped<INotificationService, NotificationService>();
 
         return services;
     }

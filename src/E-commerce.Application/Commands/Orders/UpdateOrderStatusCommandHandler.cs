@@ -7,10 +7,12 @@ namespace E_commerce.Application.Commands.Orders;
 public class UpdateOrderStatusCommandHandler : ICommandHandler<UpdateOrderStatusCommand, bool>
 {
     private readonly IApplicationDbContext _context;
+    private readonly INotificationService _notificationService;
 
-    public UpdateOrderStatusCommandHandler(IApplicationDbContext context)
+    public UpdateOrderStatusCommandHandler(IApplicationDbContext context, INotificationService notificationService)
     {
         _context = context;
+        _notificationService = notificationService;
     }
 
     public async Task<bool> Handle(UpdateOrderStatusCommand request, CancellationToken cancellationToken)
@@ -37,6 +39,14 @@ public class UpdateOrderStatusCommandHandler : ICommandHandler<UpdateOrderStatus
         }
 
         await _context.SaveChangesAsync(cancellationToken);
+        
+        // Send real-time notification to customer
+        await _notificationService.SendOrderStatusUpdateAsync(
+            order.CustomerId.ToString(),
+            order.Id,
+            request.Status,
+            cancellationToken);
+        
         return true;
     }
 }
