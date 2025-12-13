@@ -10,6 +10,7 @@ public class Customer : BaseEntity
     public string? PhoneNumber { get; private set; } // Customer's phone number (optional)
     public Address? DefaultShippingAddress { get; private set; } // Default address for order delivery (optional)
     public Address? DefaultBillingAddress { get; private set; } // Default address for billing (optional)
+    public string? ProfilePictureUrl { get; private set; } // Customer's profile picture URL
     public bool IsActive { get; private set; } // Whether customer account is active (false = deactivated)
     public DateTime RegistrationDate { get; private set; } // When customer registered/signed up (UTC)
 
@@ -72,6 +73,12 @@ public class Customer : BaseEntity
     public void Activate()
     {
         IsActive = true;
+        UpdateTimestamp();
+    }
+
+    public void UpdateProfilePicture(string profilePictureUrl)
+    {
+        ProfilePictureUrl = profilePictureUrl;
         UpdateTimestamp();
     }
 }

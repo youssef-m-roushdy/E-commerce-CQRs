@@ -146,19 +146,23 @@ public class ProductsController : BaseApiController
     }
 
     /// <summary>
-    /// Update product image (Admin, Manager)
+    /// Upload product image to Cloudinary (Admin, Manager) - Max 2MB
     /// </summary>
-    [HttpPatch("{id}/image")]
+    [HttpPost("{id}/image")]
     [Authorize(Roles = "Admin,Manager")]
-    public async Task<IActionResult> UpdateImage(Guid id, [FromBody] UpdateImageRequest request, CancellationToken cancellationToken)
+    [RequestSizeLimit(2 * 1024 * 1024)] // 2MB limit
+    public async Task<IActionResult> UploadImage(Guid id, IFormFile image, CancellationToken cancellationToken)
     {
-        var command = new UpdateProductImageCommand(id, request.ImageUrl);
+        if (image == null)
+            return BadRequest(new { message = "Image file is required" });
+
+        var command = new UpdateProductImageCommand(id, image);
         var result = await Mediator.Send(command, cancellationToken);
 
         if (!result)
             return NotFound(new { message = $"Product with ID {id} not found" });
 
-        return NoContent();
+        return Ok(new { message = "Product image uploaded successfully" });
     }
 
     /// <summary>
@@ -221,7 +225,6 @@ public record UpdateProductRequest(
 
 public record UpdatePriceRequest(decimal Price, string Currency);
 public record UpdateStatusRequest(string Status);
-public record UpdateImageRequest(string ImageUrl);
 public record UpdateStockRequest(int Stock);
 public record AddStockRequest(int Quantity);
 public record ReduceStockRequest(int Quantity);

@@ -86,6 +86,25 @@ public class CustomersController : BaseApiController
 
         return NoContent();
     }
+
+    /// <summary>
+    /// Upload customer profile picture to Cloudinary (Customer own profile, Admin, Manager) - Max 2MB
+    /// </summary>
+    [HttpPost("{id}/profile-picture")]
+    [RequestSizeLimit(2 * 1024 * 1024)] // 2MB limit
+    public async Task<IActionResult> UploadProfilePicture(Guid id, IFormFile image, CancellationToken cancellationToken)
+    {
+        if (image == null)
+            return BadRequest(new { message = "Image file is required" });
+
+        var command = new UpdateCustomerProfilePictureCommand(id, image);
+        var result = await Mediator.Send(command, cancellationToken);
+
+        if (!result)
+            return NotFound(new { message = $"Customer with ID {id} not found" });
+
+        return Ok(new { message = "Profile picture uploaded successfully" });
+    }
 }
 
 // Request DTOs

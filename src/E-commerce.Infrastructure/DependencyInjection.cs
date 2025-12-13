@@ -95,12 +95,16 @@ public static class DependencyInjection
         // Configure Email Settings
         services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
 
+        // Configure Cloudinary Settings
+        services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
+
         // Register Services
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IUserManagementService, UserManagementService>();
         services.AddScoped<INotificationService, NotificationService>();
+        services.AddScoped<ICloudinaryService, CloudinaryService>();
 
         return services;
     }
