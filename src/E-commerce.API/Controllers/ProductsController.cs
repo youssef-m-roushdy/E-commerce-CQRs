@@ -63,9 +63,10 @@ public class ProductsController : BaseApiController
     }
 
     /// <summary>
-    /// Create a new product
+    /// Create a new product (Admin, Manager)
     /// </summary>
     [HttpPost]
+    [Authorize(Roles = "Admin,Manager")]
     public async Task<IActionResult> Create([FromBody] CreateProductCommand command, CancellationToken cancellationToken)
     {
         var productId = await Mediator.Send(command, cancellationToken);
@@ -73,9 +74,10 @@ public class ProductsController : BaseApiController
     }
 
     /// <summary>
-    /// Update product details
+    /// Update product details (Admin, Manager)
     /// </summary>
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin,Manager")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateProductRequest request, CancellationToken cancellationToken)
     {
         var command = new UpdateProductCommand(
@@ -96,9 +98,10 @@ public class ProductsController : BaseApiController
     }
 
     /// <summary>
-    /// Delete a product
+    /// Delete a product (Admin only)
     /// </summary>
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
     {
         var command = new DeleteProductCommand(id);
@@ -111,9 +114,10 @@ public class ProductsController : BaseApiController
     }
 
     /// <summary>
-    /// Update product price
+    /// Update product price (Admin, Manager)
     /// </summary>
     [HttpPatch("{id}/price")]
+    [Authorize(Roles = "Admin,Manager")]
     public async Task<IActionResult> UpdatePrice(Guid id, [FromBody] UpdatePriceRequest request, CancellationToken cancellationToken)
     {
         var command = new UpdateProductPriceCommand(id, request.Price, request.Currency);
@@ -126,9 +130,10 @@ public class ProductsController : BaseApiController
     }
 
     /// <summary>
-    /// Update product status
+    /// Update product status (Admin, Manager)
     /// </summary>
     [HttpPatch("{id}/status")]
+    [Authorize(Roles = "Admin,Manager")]
     public async Task<IActionResult> UpdateStatus(Guid id, [FromBody] UpdateStatusRequest request, CancellationToken cancellationToken)
     {
         var command = new UpdateProductStatusCommand(id, request.Status);
@@ -141,9 +146,10 @@ public class ProductsController : BaseApiController
     }
 
     /// <summary>
-    /// Update product image
+    /// Update product image (Admin, Manager)
     /// </summary>
     [HttpPatch("{id}/image")]
+    [Authorize(Roles = "Admin,Manager")]
     public async Task<IActionResult> UpdateImage(Guid id, [FromBody] UpdateImageRequest request, CancellationToken cancellationToken)
     {
         var command = new UpdateProductImageCommand(id, request.ImageUrl);
@@ -156,9 +162,10 @@ public class ProductsController : BaseApiController
     }
 
     /// <summary>
-    /// Update product stock
+    /// Update product stock (Admin, Manager)
     /// </summary>
     [HttpPatch("{id}/stock")]
+    [Authorize(Roles = "Admin,Manager")]
     public async Task<IActionResult> UpdateStock(Guid id, [FromBody] UpdateStockRequest request, CancellationToken cancellationToken)
     {
         var command = new UpdateProductStockCommand(id, request.Stock);
@@ -171,9 +178,10 @@ public class ProductsController : BaseApiController
     }
 
     /// <summary>
-    /// Add stock to product
+    /// Add stock to product (Admin, Manager)
     /// </summary>
     [HttpPost("{id}/stock/add")]
+    [Authorize(Roles = "Admin,Manager")]
     public async Task<IActionResult> AddStock(Guid id, [FromBody] AddStockRequest request, CancellationToken cancellationToken)
     {
         var command = new AddProductStockCommand(id, request.Quantity);
@@ -186,9 +194,10 @@ public class ProductsController : BaseApiController
     }
 
     /// <summary>
-    /// Reduce stock from product
+    /// Reduce stock from product (Admin, Manager)
     /// </summary>
     [HttpPost("{id}/stock/reduce")]
+    [Authorize(Roles = "Admin,Manager")]
     public async Task<IActionResult> ReduceStock(Guid id, [FromBody] ReduceStockRequest request, CancellationToken cancellationToken)
     {
         var command = new ReduceProductStockCommand(id, request.Quantity);

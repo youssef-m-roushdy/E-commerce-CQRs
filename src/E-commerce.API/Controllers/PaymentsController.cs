@@ -59,9 +59,10 @@ public class PaymentsController : BaseApiController
     }
 
     /// <summary>
-    /// Complete a payment (mark as completed with transaction ID)
+    /// Complete a payment (Admin, Manager)
     /// </summary>
     [HttpPost("{id}/complete")]
+    [Authorize(Roles = "Admin,Manager")]
     public async Task<IActionResult> Complete(Guid id, [FromBody] CompletePaymentRequest request, CancellationToken cancellationToken)
     {
         var command = new CompletePaymentCommand(id, request.TransactionId);
@@ -74,9 +75,10 @@ public class PaymentsController : BaseApiController
     }
 
     /// <summary>
-    /// Refund a payment
+    /// Refund a payment (Admin, Manager)
     /// </summary>
     [HttpPost("{id}/refund")]
+    [Authorize(Roles = "Admin,Manager")]
     public async Task<IActionResult> Refund(Guid id, CancellationToken cancellationToken)
     {
         var command = new RefundPaymentCommand(id);

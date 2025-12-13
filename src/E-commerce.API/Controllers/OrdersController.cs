@@ -56,9 +56,10 @@ public class OrdersController : BaseApiController
     }
 
     /// <summary>
-    /// Update order status
+    /// Update order status (Admin, Manager, Support)
     /// </summary>
     [HttpPatch("{id}/status")]
+    [Authorize(Roles = "Admin,Manager,Support")]
     public async Task<IActionResult> UpdateStatus(Guid id, [FromBody] UpdateOrderStatusRequest request, CancellationToken cancellationToken)
     {
         var command = new UpdateOrderStatusCommand(id, request.Status);

@@ -39,9 +39,10 @@ public class ProductCategoriesController : BaseApiController
     }
 
     /// <summary>
-    /// Create a new product category
+    /// Create a new product category (Admin, Manager)
     /// </summary>
     [HttpPost]
+    [Authorize(Roles = "Admin,Manager")]
     public async Task<IActionResult> Create([FromBody] CreateProductCategoryRequest request, CancellationToken cancellationToken)
     {
         var command = new CreateProductCategoryCommand(
@@ -56,9 +57,10 @@ public class ProductCategoriesController : BaseApiController
     }
 
     /// <summary>
-    /// Update product category details
+    /// Update product category details (Admin, Manager)
     /// </summary>
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin,Manager")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateProductCategoryRequest request, CancellationToken cancellationToken)
     {
         var command = new UpdateProductCategoryCommand(
@@ -76,9 +78,10 @@ public class ProductCategoriesController : BaseApiController
     }
 
     /// <summary>
-    /// Delete a product category
+    /// Delete a product category (Admin only)
     /// </summary>
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
     {
         var command = new DeleteProductCategoryCommand(id);

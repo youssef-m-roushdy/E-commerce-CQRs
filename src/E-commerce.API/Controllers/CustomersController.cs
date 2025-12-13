@@ -11,9 +11,10 @@ namespace E_commerce.API.Controllers;
 public class CustomersController : BaseApiController
 {
     /// <summary>
-    /// Get all customers
+    /// Get all customers (Admin, Manager, Support)
     /// </summary>
     [HttpGet]
+    [Authorize(Roles = "Admin,Manager,Support")]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
         var query = new GetCustomersQuery();
@@ -22,9 +23,10 @@ public class CustomersController : BaseApiController
     }
 
     /// <summary>
-    /// Get customer by ID
+    /// Get customer by ID (Admin, Manager, Support)
     /// </summary>
     [HttpGet("{id}")]
+    [Authorize(Roles = "Admin,Manager,Support")]
     public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
     {
         var query = new GetCustomerByIdQuery(id);
@@ -48,9 +50,10 @@ public class CustomersController : BaseApiController
     }
 
     /// <summary>
-    /// Update customer details
+    /// Update customer details (Admin, Manager, Support)
     /// </summary>
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin,Manager,Support")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateCustomerRequest request, CancellationToken cancellationToken)
     {
         var command = new UpdateCustomerCommand(
@@ -69,9 +72,10 @@ public class CustomersController : BaseApiController
     }
 
     /// <summary>
-    /// Delete a customer
+    /// Delete a customer (Admin only)
     /// </summary>
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
     {
         var command = new DeleteCustomerCommand(id);
