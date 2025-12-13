@@ -2,10 +2,12 @@ using E_commerce.Application.Commands.Customers;
 using E_commerce.Application.Queries.Customers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace E_commerce.API.Controllers;
 
 [Authorize]
+[EnableRateLimiting("sliding")]
 public class CustomersController : BaseApiController
 {
     /// <summary>

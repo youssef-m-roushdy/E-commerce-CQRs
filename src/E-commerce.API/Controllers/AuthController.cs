@@ -3,9 +3,11 @@ using E_commerce.Application.Commands.Customers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace E_commerce.API.Controllers;
 
+[EnableRateLimiting("sliding")]
 public class AuthController : BaseApiController
 {
     private readonly IIdentityService _identityService;

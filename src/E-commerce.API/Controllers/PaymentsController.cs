@@ -2,10 +2,12 @@ using E_commerce.Application.Commands.Payments;
 using E_commerce.Application.Queries.Payments;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace E_commerce.API.Controllers;
 
 [Authorize]
+[EnableRateLimiting("concurrency")]
 public class PaymentsController : BaseApiController
 {
     /// <summary>

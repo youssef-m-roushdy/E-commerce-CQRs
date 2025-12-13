@@ -2,10 +2,12 @@ using E_commerce.Application.Commands.Carts;
 using E_commerce.Application.Queries.Carts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace E_commerce.API.Controllers;
 
 [Authorize]
+[EnableRateLimiting("token")]
 public class CartsController : BaseApiController
 {
     /// <summary>

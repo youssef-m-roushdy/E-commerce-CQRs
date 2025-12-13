@@ -2,10 +2,12 @@ using E_commerce.Application.Commands.ProductCategories;
 using E_commerce.Application.Queries.ProductCategories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace E_commerce.API.Controllers;
 
 [Authorize]
+[EnableRateLimiting("fixed")]
 public class ProductCategoriesController : BaseApiController
 {
     /// <summary>

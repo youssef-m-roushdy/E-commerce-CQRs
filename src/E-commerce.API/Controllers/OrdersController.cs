@@ -3,10 +3,12 @@ using E_commerce.Application.DTOs;
 using E_commerce.Application.Queries.Orders;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace E_commerce.API.Controllers;
 
 [Authorize]
+[EnableRateLimiting("concurrency")]
 public class OrdersController : BaseApiController
 {
     /// <summary>
