@@ -2,22 +2,22 @@ using E_commerce.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace E_commerce.Infrastructure.Persistence.Configurations;
+namespace E_commerce.Persistence.Persistence.Configurations;
 
-public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
+public class CartItemConfiguration : IEntityTypeConfiguration<CartItem>
 {
-    public void Configure(EntityTypeBuilder<OrderItem> builder)
+    public void Configure(EntityTypeBuilder<CartItem> builder)
     {
-        builder.HasKey(oi => oi.Id);
+        builder.HasKey(ci => ci.Id);
 
-        builder.Property(oi => oi.ProductId)
+        builder.Property(ci => ci.ProductId)
             .IsRequired();
 
-        builder.Property(oi => oi.ProductName)
+        builder.Property(ci => ci.ProductName)
             .IsRequired()
             .HasMaxLength(200);
 
-        builder.OwnsOne(oi => oi.UnitPrice, money =>
+        builder.OwnsOne(ci => ci.UnitPrice, money =>
         {
             money.Property(m => m.Amount)
                 .HasColumnName("UnitPrice")
@@ -30,7 +30,7 @@ public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
                 .IsRequired();
         });
 
-        builder.OwnsOne(oi => oi.TotalPrice, money =>
+        builder.OwnsOne(ci => ci.TotalPrice, money =>
         {
             money.Property(m => m.Amount)
                 .HasColumnName("TotalPrice")
@@ -43,13 +43,13 @@ public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
                 .IsRequired();
         });
 
-        builder.Property(oi => oi.Quantity)
+        builder.Property(ci => ci.Quantity)
             .IsRequired();
 
-        builder.Property(oi => oi.IsDeleted)
+        builder.Property(ci => ci.IsDeleted)
             .IsRequired()
             .HasDefaultValue(false);
 
-        builder.HasQueryFilter(oi => !oi.IsDeleted);
+        builder.HasQueryFilter(ci => !ci.IsDeleted);
     }
 }

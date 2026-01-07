@@ -1,6 +1,6 @@
 using E_commerce.Application.Common.Interfaces;
 using E_commerce.Application.Common.Models;
-using E_commerce.Infrastructure.Identity;
+using E_commerce.Persistence.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;

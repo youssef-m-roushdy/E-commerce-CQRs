@@ -1,11 +1,10 @@
 using E_commerce.Application.Common.Interfaces;
 using E_commerce.Application.Common.Models;
-using E_commerce.Infrastructure.Identity;
-using E_commerce.Infrastructure.Persistence;
+using E_commerce.Persistence.Identity;
 using E_commerce.Infrastructure.Services;
+using E_commerce.Persistence.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -19,16 +18,6 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        // Add DbContext
-        services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(
-                configuration.GetConnectionString("DefaultConnection"),
-                b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
-
-        // Register IApplicationDbContext
-        services.AddScoped<IApplicationDbContext>(provider =>
-            provider.GetRequiredService<ApplicationDbContext>());
-
         // Add Identity
         services.AddIdentityCore<ApplicationUser>(options =>
         {

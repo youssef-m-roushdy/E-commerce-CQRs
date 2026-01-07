@@ -2,7 +2,7 @@ using E_commerce.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace E_commerce.Infrastructure.Persistence.Configurations;
+namespace E_commerce.Persistence.Persistence.Configurations;
 
 public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
 {

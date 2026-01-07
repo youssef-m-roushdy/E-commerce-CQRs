@@ -1,11 +1,11 @@
 using E_commerce.Application.Common.Interfaces;
 using E_commerce.Domain.Entities;
-using E_commerce.Infrastructure.Identity;
+using E_commerce.Persistence.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace E_commerce.Infrastructure.Persistence;
+namespace E_commerce.Persistence.Persistence;
 
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>, IApplicationDbContext
 {

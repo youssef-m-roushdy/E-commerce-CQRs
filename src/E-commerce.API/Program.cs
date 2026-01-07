@@ -1,5 +1,6 @@
 using E_commerce.Application;
 using E_commerce.Infrastructure;
+using E_commerce.Persistence;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.OpenApi.Models;
 using System.Threading.RateLimiting;
@@ -141,8 +142,9 @@ builder.Services.AddRateLimiter(options =>
     };
 });
 
-// Add Application and Infrastructure layers
+// Add Application, Persistence and Infrastructure layers
 builder.Services.AddApplication();
+builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();

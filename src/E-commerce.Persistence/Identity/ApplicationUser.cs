@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace E_commerce.Infrastructure.Identity;
+namespace E_commerce.Persistence.Identity;
 
 /// <summary>
 /// Application user for authentication - extends IdentityUser

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace E_commerce.Infrastructure.Migrations
+namespace E_commerce.Persistence.Migrations
 {
     /// <inheritdoc />
     public partial class AddProfilePictureToCustomer : Migration

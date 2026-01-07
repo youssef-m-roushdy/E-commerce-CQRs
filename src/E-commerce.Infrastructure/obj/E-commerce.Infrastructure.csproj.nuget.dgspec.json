@@ -56,7 +56,7 @@
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[8.0.0, )"
+              "version": "[8.0.22, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
@@ -163,6 +163,9 @@
               },
               "/home/youssef/Desktop/E-commerce/src/E-commerce.Domain/E-commerce.Domain.csproj": {
                 "projectPath": "/home/youssef/Desktop/E-commerce/src/E-commerce.Domain/E-commerce.Domain.csproj"
+              },
+              "/home/youssef/Desktop/E-commerce/src/E-commerce.Persistence/E-commerce.Persistence.csproj": {
+                "projectPath": "/home/youssef/Desktop/E-commerce/src/E-commerce.Persistence/E-commerce.Persistence.csproj"
               }
             }
           }
@@ -191,7 +194,7 @@
             },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[8.0.0, )"
+              "version": "[8.0.22, )"
             },
             "Microsoft.AspNetCore.SignalR.Core": {
               "target": "Package",
@@ -199,11 +202,85 @@
             },
             "Microsoft.Extensions.Identity.Core": {
               "target": "Package",
-              "version": "[8.0.0, )"
+              "version": "[8.0.22, )"
             },
             "Stripe.net": {
               "target": "Package",
               "version": "[50.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.121/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/youssef/Desktop/E-commerce/src/E-commerce.Persistence/E-commerce.Persistence.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/youssef/Desktop/E-commerce/src/E-commerce.Persistence/E-commerce.Persistence.csproj",
+        "projectName": "E-commerce.Persistence",
+        "projectPath": "/home/youssef/Desktop/E-commerce/src/E-commerce.Persistence/E-commerce.Persistence.csproj",
+        "packagesPath": "/home/youssef/.nuget/packages/",
+        "outputPath": "/home/youssef/Desktop/E-commerce/src/E-commerce.Persistence/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/youssef/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/home/youssef/Desktop/E-commerce/src/E-commerce.Application/E-commerce.Application.csproj": {
+                "projectPath": "/home/youssef/Desktop/E-commerce/src/E-commerce.Application/E-commerce.Application.csproj"
+              },
+              "/home/youssef/Desktop/E-commerce/src/E-commerce.Domain/E-commerce.Domain.csproj": {
+                "projectPath": "/home/youssef/Desktop/E-commerce/src/E-commerce.Domain/E-commerce.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.22, )"
+            },
+            "Microsoft.Data.SqlClient": {
+              "target": "Package",
+              "version": "[5.1.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.22, )"
             }
           },
           "imports": [
